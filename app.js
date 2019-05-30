@@ -1,6 +1,6 @@
 const validator = require('validator');
-const chalk = require('chalk');
 const yargs = require('yargs');
+const chalk = require('chalk');
 const notes = require('./notes');
 
 yargs.version('1.1.0');
@@ -46,8 +46,8 @@ yargs.command({
 yargs.command({
   command: 'list',
   describe: 'List notes',
-  handler: () => {
-    console.log('Listing notes');
+  handler: (argv) => {
+    notes.listNotes();
   }
 });
 

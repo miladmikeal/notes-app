@@ -1,4 +1,5 @@
 const fs = require('fs');
+const chalk = require('chalk');
 
 const getNotes = () => 'Your notes...';
 
@@ -19,12 +20,24 @@ const addNote = (title, body) => {
     });
 
     saveNotes(notes);
-    console.log('New note saved.');
+    console.log(chalk.green.inverse('New note saved.'));
   } else {
-    console.log('Note title already exists. No duplicates allowed.');
+    console.log(chalk.red.inverse("Error:") + ' Note title already exists. No duplicates allowed.');
   }
 };
 
+/**
+ * Returns list of notes.
+ * params: n/a
+ * return: n/a
+ */
+const listNotes = () => {
+  const notes = loadNotes();
+  console.log(chalk.bold("Your notes:"));
+  notes.forEach(note => {
+    console.log(note.title);
+  });
+};
 
 /**
  * Removes note with specified title from notes.json file.
@@ -36,9 +49,12 @@ const removeNote = (title) => {
 
   const filteredNotes = notes.filter(note => note.title !== title);
 
-  console.log(`Removing ${title}`);
-
-  saveNotes(filteredNotes);
+  if (filteredNotes.length < notes.length) {
+    console.log(chalk.green.inverse("Note removed"));
+    saveNotes(filteredNotes);
+  } else {
+    console.log(chalk.red.inverse("No note found"));
+  }
 };
 
 /**
@@ -65,5 +81,6 @@ const saveNotes = (notes) => fs.writeFileSync('notes.json', JSON.stringify(notes
 module.exports = {
   getNotes,
   addNote,
-  removeNote
+  removeNote,
+  listNotes
 };
